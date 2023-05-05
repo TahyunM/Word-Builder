@@ -7,6 +7,10 @@ import pygame.mixer
 import os
 import pickle
 
+
+# Get the current directory of the script
+script_dir = os.path.dirname(os.path.realpath(__file__))
+
 # Initialize Pygame
 pygame.init()
 
@@ -19,10 +23,15 @@ pygame.display.set_caption("Word Builder Game")
 pygame.mixer.init()
 
 # Load and play music
-music_path = 'C:/Users/Tahyun/Desktop/COSC 231/carefree.mp3'
+music_file = "carefree.mp3"
+music_path = os.path.join(script_dir, 'audio', 'carefree.mp3')
+# Load sound effects
+correct_sound = pygame.mixer.Sound(os.path.join(script_dir, 'audio', 'correct_sound.wav'))
+incorrect_sound = pygame.mixer.Sound(os.path.join(script_dir, 'audio', 'incorrect_sound.wav'))
 pygame.mixer.music.load(music_path)
 pygame.mixer.music.play(-1)  
 pygame.mixer.music.set_volume(0.5)
+
 
 
 # Set up colors
@@ -195,8 +204,10 @@ def game_loop():
                 elif event.key == pygame.K_RETURN:
                     checker = SpellChecker("en_US")
                     if not checker.check(user_input):
+                         incorrect_sound.play()
                         user_input = ""
                     else:
+                        correct_sound.play()
                         score += len(user_input) * 10
                         user_input = ""
                 else:
@@ -281,4 +292,5 @@ def display_options():
 
 if __name__ == "__main__":
     main_menu()
+
 
