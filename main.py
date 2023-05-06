@@ -143,10 +143,15 @@ def main_menu():
 def display_credits():
     show_credits = True
 
-    credit_text = ("The following music was used for this media project:\n"
-                   "Music: Carefree by Kevin MacLeod\n"
-                   "Free download: https://filmmusic.io/song/3476-carefree\n"
-                   "License (CC BY 4.0): https://filmmusic.io/standard-license")
+    credit_text = ("The following music was used for this media project:",
+                   "Music: Carefree by Kevin MacLeod",
+                   "Free download: https://filmmusic.io/song/3476-carefree",
+                   "License (CC BY 4.0): https://filmmusic.io/standard-license",
+                   "",  # Empty line for spacing
+                   "The following sound effects were used for this media project:",
+                   "Correct Sound: https://freesound.org/s/109662/",
+                   "Incorrect Sound: https://freesound.org/s/142608/",
+                   "License (CC BY 3.0): https://creativecommons.org/licenses/by/3.0/")
 
     while show_credits:
         WINDOW.fill(WHITE)
@@ -159,10 +164,12 @@ def display_credits():
                     show_credits = False
 
         # Draw credits on the screen
-        credit_lines = credit_text.split("\n")
-        for i, line in enumerate(credit_lines):
+        y_offset = 100  # Start drawing the text 100 pixels from the top of the screen
+        line_spacing = 30  # Vertical spacing between the lines
+
+        for i, line in enumerate(credit_text):
             line_surface = FONT.render(line, True, BLACK)
-            line_rect = line_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50 + i * 50))
+            line_rect = line_surface.get_rect(center=(WIDTH // 2, y_offset + i * line_spacing))
             WINDOW.blit(line_surface, line_rect)
 
         pygame.display.flip()
@@ -204,7 +211,7 @@ def game_loop():
                 elif event.key == pygame.K_RETURN:
                     checker = SpellChecker("en_US")
                     if not checker.check(user_input):
-                         incorrect_sound.play()
+                        incorrect_sound.play()
                         user_input = ""
                     else:
                         correct_sound.play()
@@ -292,5 +299,3 @@ def display_options():
 
 if __name__ == "__main__":
     main_menu()
-
-
